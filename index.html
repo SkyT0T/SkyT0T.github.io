@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Metaphysics OS - 跨端适配版</title>
+    <title>Metaphysics OS - 全平台终极版</title>
     <style>
         :root { --bg: #030303; --panel: #0a0a0a; --border: #333; --text: #d1d5db; --primary: #cda434; --zhouyi: #4ade80; --ziwei: #a855f7; --qimen: #ef4444; }
         
@@ -11,7 +11,6 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Courier New', monospace; 
             background: var(--bg); color: var(--text); 
             padding: 10px; margin: 0;
-            /* 适配 iPhone 底部安全区 */
             padding-bottom: env(safe-area-inset-bottom);
         }
 
@@ -26,62 +25,79 @@
 
         .header h1 { 
             color: var(--primary); margin: 0; 
-            font-size: 1.5em; /* 手机端默认缩小标题 */
+            font-size: 1.6em; 
             letter-spacing: 2px; text-transform: uppercase; text-align: center;
         }
+        .sys-info { text-align: center; color: #666; font-size: 0.75em; margin-top: 5px; }
 
-        /* 响应式控制面板：手机上一列，电脑上两列 */
+        /* 响应式控制面板 */
         .control-panel { 
             display: grid; 
             grid-template-columns: 1fr; 
-            gap: 15px; margin: 20px 0; 
+            gap: 15px; margin: 15px 0; 
             background: #050505; padding: 15px; border: 1px solid #222; 
         }
 
-        @min-width: 768px {
+        @media (min-width: 768px) {
             .header h1 { font-size: 2.2em; }
             .control-panel { grid-template-columns: 1fr 1fr; }
             .module-grid { grid-template-columns: 1fr 1fr 1fr !important; }
+            .full-width { grid-column: span 2; }
         }
 
         label { display: block; color: var(--primary); font-size: 0.85em; margin-bottom: 8px; font-weight: bold; }
+        .time-header { display: flex; justify-content: space-between; align-items: baseline; }
+        .sync-btn { background: none; border: none; color: #888; text-decoration: underline; cursor: pointer; font-size: 0.8em; padding: 0; }
+        .sync-btn:hover { color: var(--primary); }
+        
         input[type="datetime-local"] { 
             width: 100%; padding: 12px; background: #000; border: 1px solid var(--border); 
             color: #fff; font-size: 1em; box-sizing: border-box; border-radius: 4px;
-            /* 解决 iOS 输入框内阴影问题 */
-            -webkit-appearance: none;
+            -webkit-appearance: none; /* 抹平 iOS 默认样式 */
         }
 
-        /* 响应式模块网格 */
-        .module-grid { 
-            display: grid; 
-            grid-template-columns: 1fr; /* 手机端默认一列 */
-            gap: 15px; 
-        }
-
-        .module { border: 1px solid var(--border); background: #080808; padding: 12px; }
-        .mod-title { font-weight: bold; font-size: 1em; margin-bottom: 12px; border-bottom: 1px dashed var(--border); padding-bottom: 8px; }
-
-        /* 按钮点击区域优化 */
         button.main-btn { 
-            width: 100%; padding: 18px; background: #1a1a1a; border: 1px solid var(--primary); 
-            color: var(--primary); font-weight: bold; font-size: 1em; cursor: pointer; 
-            transition: 0.3s; margin-top: 10px; border-radius: 4px;
+            width: 100%; padding: 16px; background: #1a1a1a; border: 1px solid var(--primary); 
+            color: var(--primary); font-weight: bold; font-size: 1.1em; cursor: pointer; 
+            transition: 0.3s; margin-top: 5px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px;
         }
         button.main-btn:active { background: var(--primary); color: #000; }
 
-        /* 导出面板适配 */
-        textarea { 
-            width: 100%; height: 300px; background: #000; border: 1px solid #222; 
-            color: #e5e7eb; font-size: 0.9em; padding: 12px; box-sizing: border-box; 
-        }
+        /* 响应式模块网格 */
+        .module-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .module { border: 1px solid var(--border); background: #080808; padding: 12px; display: flex; flex-direction: column; }
+        .mod-title { font-weight: bold; font-size: 1em; margin-bottom: 12px; border-bottom: 1px dashed var(--border); padding-bottom: 8px; }
+        .mod-title.zy { color: var(--zhouyi); }
+        .mod-title.zw { color: var(--ziwei); }
+        .mod-title.qm { color: var(--qimen); }
 
-        /* 奇门盘在手机上的微调 */
-        .qimen-board { 
-            display: grid; grid-template-columns: repeat(3, 1fr); 
-            grid-template-rows: repeat(3, auto); gap: 4px; 
-        }
-        .qm-cell { min-height: 80px; padding: 5px; font-size: 0.8em; }
+        /* 周易 UI */
+        .gua-display { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
+        .gua-box { padding: 10px; border: 1px solid #222; background: #000; text-align: center; }
+        .gua-name { font-size: 1.3em; font-weight: bold; color: var(--zhouyi); margin-bottom: 5px; }
+
+        /* 紫微 UI */
+        .ziwei-board { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, minmax(65px, auto)); gap: 3px; background: #111; padding: 3px; border: 1px solid #333; font-size: 0.75em; }
+        .zw-cell { background: #000; border: 1px solid #222; padding: 4px; position: relative; min-height: 60px; }
+        .zw-cell.center-hole { grid-column: 2 / 4; grid-row: 2 / 4; background: transparent; border: none; display: flex; align-items: center; justify-content: center; color: #444; font-size: 1em; text-align: center; }
+        .palace-name { position: absolute; bottom: 2px; right: 2px; background: #222; padding: 1px 3px; font-size: 0.85em; color: #aaa; border-radius: 2px; }
+        .star-main { color: var(--ziwei); font-weight: bold; display: block; margin-bottom: 2px; }
+
+        /* 奇门 UI */
+        .qimen-board { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, minmax(90px, auto)); gap: 4px; background: #111; padding: 4px; border: 1px solid #333; }
+        .qm-cell { background: #050505; border: 1px solid #222; position: relative; display: flex; flex-direction: column; padding: 6px; justify-content: space-between;}
+        .qm-cell.center5 { background: #0a0a0a; border: 1px dashed #333; align-items: center; justify-content: center; color: #555; font-size: 0.9em; }
+        .qm-god { color: #a1a1aa; font-size: 0.75em; } 
+        .qm-star { color: var(--primary); font-weight: bold; font-size: 1em; } 
+        .qm-door { color: var(--qimen); font-weight: bold; font-size: 1.1em; margin-top: auto; text-align: right;} 
+        .qm-palace { position: absolute; bottom: 2px; left: 2px; color: #444; font-size: 0.7em; } 
+
+        /* 导出面板 */
+        .export-panel { margin-top: 20px; border-top: 1px solid #4ade80; padding-top: 15px; display: none; }
+        .export-title { color: #4ade80; font-size: 1.1em; font-weight: bold; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        textarea { width: 100%; height: 280px; background: #000; border: 1px solid #222; color: #e5e7eb; font-size: 0.85em; padding: 12px; box-sizing: border-box; resize: vertical; line-height: 1.5; border-radius: 4px; }
+        .copy-btn { padding: 8px 12px; background: #4ade80; color: #000; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; font-size: 0.85em; }
+        .copy-btn:active { background: #22c55e; }
     </style>
 </head>
 <body>
@@ -89,52 +105,241 @@
 <div class="os-container">
     <div class="header">
         <h1>Metaphysics OS</h1>
-        <div style="text-align:center; color:#666; font-size:0.75em; margin-top:5px;">Mobile & Desktop Responsive Hub</div>
+        <div class="sys-info">实时时空追踪模式 | 全息排盘参数提取 (Mobile Ready)</div>
     </div>
 
     <div class="control-panel">
         <div>
-            <label>[ P1 ] TARGET_BIRTH (本命)</label>
-            <input type="datetime-local" id="birth-time" value="1990-01-01T18:18">
+            <label>[ P1 ] TARGET_BIRTH (出生年月日)</label>
+            <input type="datetime-local" id="birth-time" value="1991-01-01T18:18">
         </div>
         <div>
-            <div style="display:flex; justify-content:space-between">
-                <label>[ P2 ] ACTION_TIME (起局)</label>
-                <button onclick="syncCurrentTime()" style="background:none; border:none; color:#888; font-size:0.8em; text-decoration:underline;">同步当前</button>
+            <div class="time-header">
+                <label>[ P2 ] ACTION_TIME (决策起局点(现在))</label>
+                <button class="sync-btn" onclick="syncCurrentTime()">[ 同步当前时间 ]</button>
             </div>
             <input type="datetime-local" id="action-time">
         </div>
-        <div class="full-width" style="grid-column: 1 / -1;">
-            <button class="main-btn" onclick="runEngines()">>>> 提取数据 (EXTRACT) <<<</button>
+        <div class="full-width">
+            <button class="main-btn" onclick="runEngines()">>>> 提取全维排盘参数 (EXTRACT) <<<</button>
         </div>
     </div>
 
     <div class="module-grid">
-        <div class="module"><div class="mod-title" style="color:var(--zhouyi)">> M1: 周易</div><div id="zhouyi-output">STANDBY...</div></div>
-        <div class="module"><div class="mod-title" style="color:var(--ziwei)">> M2: 紫微</div><div id="ziwei-output">STANDBY...</div></div>
-        <div class="module"><div class="mod-title" style="color:var(--qimen)">> M3: 奇门</div><div id="qimen-output">STANDBY...</div></div>
+        <div class="module" id="mod-zhouyi"><div class="mod-title zy">> M1: 周易阵列</div><div id="zhouyi-output" style="color:#666; font-size: 0.85em;">STANDBY...</div></div>
+        <div class="module" id="mod-ziwei"><div class="mod-title zw">> M2: 紫微命宫</div><div id="ziwei-output" style="color:#666; font-size: 0.85em;">STANDBY...</div></div>
+        <div class="module" id="mod-qimen"><div class="mod-title qm">> M3: 奇门沙盘</div><div id="qimen-output" style="color:#666; font-size: 0.85em;">STANDBY...</div></div>
     </div>
 
-    <div class="export-panel" id="export-panel" style="display:none; margin-top:20px; border-top:1px solid #4ade80; padding-top:20px;">
-        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-            <span style="color:#4ade80; font-weight:bold;">AI PROMPT READY</span>
-            <button onclick="copyPrompt()" style="background:#4ade80; border:none; padding:5px 10px; font-weight:bold;">一键复制</button>
+    <div class="export-panel" id="export-panel">
+        <div class="export-title">
+            <span>>>> AI 专属提示词生成完毕 <<<</span>
+            <button class="copy-btn" onclick="copyPrompt()">一键复制</button>
         </div>
+        <div style="color:#888; font-size:0.75em; margin-bottom:10px;">点击按钮复制，发给任意 AI，并补上你的实际问题。</div>
         <textarea id="ai-prompt-data" readonly></textarea>
     </div>
 </div>
 
 <script>
-    // 同步时间逻辑
+    // 1. 系统时间同步引擎
     function syncCurrentTime() {
         let now = new Date();
-        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-        document.getElementById('action-time').value = now.toISOString().slice(0, 16);
+        // 修正时区偏差，确保生成正确的本地时间格式 YYYY-MM-DDTHH:mm
+        let tzOffset = now.getTimezoneOffset() * 60000;
+        let localISOTime = (new Date(now.getTime() - tzOffset)).toISOString().slice(0, 16);
+        document.getElementById('action-time').value = localISOTime;
     }
+    // 网页加载时自动同步当前时间
     window.onload = syncCurrentTime;
 
-    // 此处省略具体的 runEngines 等逻辑函数（保留你之前代码中的核心 JS 逻辑即可）
-    // 为了节省篇幅，请将你之前版本中从 const BA_GUA 开始到 runEngines 结束的 JS 代码粘贴在这里
+    // 2. 核心字典库
+    const BA_GUA = { 1:{name:"乾", wx:"金"}, 2:{name:"兑", wx:"金"}, 3:{name:"离", wx:"火"}, 4:{name:"震", wx:"木"}, 5:{name:"巽", wx:"木"}, 6:{name:"坎", wx:"水"}, 7:{name:"艮", wx:"土"}, 8:{name:"坤", wx:"土"} };
+    const PALACES = ["命宫", "兄弟", "夫妻", "子女", "财帛", "疾厄", "迁移", "交友", "官禄", "田宅", "福德", "父母"];
+    const ZIWEI_GROUP = ["紫微", "天机", "", "太阳", "武曲", "天同", "", "", "廉贞", "", "", ""];
+    const TIANFU_GROUP = ["天府", "太阴", "贪狼", "巨门", "天相", "天梁", "七杀", "", "", "", "破军", ""];
+    const LUOSHU_POS = [4, 9, 2, 3, 5, 7, 8, 1, 6];
+    const PALACE_NAMES = {1:"坎一(正北)", 2:"坤二(西南)", 3:"震三(正东)", 4:"巽四(东南)", 5:"中五", 6:"乾六(西北)", 7:"兑七(正西)", 8:"艮八(东北)", 9:"离九(正南)"};
+    const STARS = ["天蓬", "天任", "天冲", "天辅", "天英", "天芮", "天柱", "天心"];
+    const DOORS = ["休门", "生门", "伤门", "杜门", "景门", "死门", "惊门", "开门"];
+    const GODS = ["值符", "螣蛇", "太阴", "六合", "白虎", "玄武", "九地", "九天"];
+
+    // 存储给 AI 的数据结构
+    let rawData = { birthStr: "", actionStr: "", zhouyi: {}, ziwei: {}, qimen: [] };
+
+    // 3. 周易算法引擎
+    function runZhouyi(actionDate) {
+        let yNum = (actionDate.getFullYear() - 3) % 12 || 12; 
+        let m = actionDate.getMonth() + 1;
+        let d = actionDate.getDate();
+        let hNum = Math.floor((actionDate.getHours() + 1) / 2) % 12 + 1; 
+        
+        let up = (yNum + m + d) % 8 || 8;
+        let down = (yNum + m + d + hNum) % 8 || 8;
+        let moving = (yNum + m + d + hNum) % 6 || 6;
+        
+        rawData.zhouyi = { upName: BA_GUA[up].name, upWx: BA_GUA[up].wx, downName: BA_GUA[down].name, downWx: BA_GUA[down].wx, moving: moving };
+
+        document.getElementById('zhouyi-output').innerHTML = `
+            <div class="gua-display">
+                <div class="gua-box"><div class="gua-name">${BA_GUA[up].name}${BA_GUA[down].name}卦</div><div style="font-size:0.8em; color:#888;">[本卦]</div></div>
+                <div class="gua-box"><div class="gua-name" style="color:#ef4444;">动爻: ${moving}</div><div style="font-size:0.8em; color:#888;">[破局点]</div></div>
+            </div>`;
+    }
+
+    // 4. 紫微算法引擎
+    function runZiwei(birthDate) {
+        let month = birthDate.getMonth() + 1;
+        let day = birthDate.getDate();
+        let hourIdx = Math.floor((birthDate.getHours() + 1) / 2) % 12;
+        
+        let destinyIdx = (2 + (month - 1) - hourIdx + 12) % 12;
+        let palaceMap = new Array(12).fill("");
+        for(let i=0; i<12; i++) { palaceMap[(destinyIdx - i + 12) % 12] = PALACES[i]; }
+
+        let bureau = (day % 5) + 2; 
+        let x = 0; while ((day + x) % bureau !== 0) { x++; }
+        let quotient = (day + x) / bureau;
+        let ziweiIdx = x % 2 === 0 ? (2 + quotient + x - 1) % 12 : (2 + quotient - x - 1 + 12) % 12;
+        let tianfuIdx = (10 - ziweiIdx + 12) % 12;
+
+        let starsMap = new Array(12).fill("");
+        rawData.ziwei.palaces = {}; 
+        
+        for(let i=0; i<12; i++) {
+            let targetZ = (ziweiIdx - i + 12) % 12;
+            let targetF = (tianfuIdx + i) % 12;
+            
+            if (ZIWEI_GROUP[i]) {
+                starsMap[targetZ] += `<span class="star-main">${ZIWEI_GROUP[i]}</span>`;
+                if(!rawData.ziwei.palaces[palaceMap[targetZ]]) rawData.ziwei.palaces[palaceMap[targetZ]] = [];
+                rawData.ziwei.palaces[palaceMap[targetZ]].push(ZIWEI_GROUP[i]);
+            }
+            if (TIANFU_GROUP[i]) {
+                starsMap[targetF] += `<span class="star-main" style="color:#fbbf24;">${TIANFU_GROUP[i]}</span>`;
+                if(!rawData.ziwei.palaces[palaceMap[targetF]]) rawData.ziwei.palaces[palaceMap[targetF]] = [];
+                rawData.ziwei.palaces[palaceMap[targetF]].push(TIANFU_GROUP[i]);
+            }
+        }
+
+        const gridPos = [ {idx: 5}, {idx: 6}, {idx: 7}, {idx: 8}, {idx: 4}, {idx: 9}, {idx: 3}, {idx: 10}, {idx: 2}, {idx: 1}, {idx: 0}, {idx: 11} ];
+        let boardHtml = `<div class="ziwei-board">`;
+        let gridCount = 0;
+        for(let r=0; r<4; r++) {
+            for(let c=0; c<4; c++) {
+                if(r>0 && r<3 && c>0 && c<3) {
+                    if(r===1 && c===1) boardHtml += `<div class="zw-cell center-hole">Base</div>`;
+                    continue;
+                }
+                let cellData = gridPos[gridCount++];
+                boardHtml += `<div class="zw-cell"><div>${starsMap[cellData.idx]}</div><div class="palace-name" style="${palaceMap[cellData.idx]==='命宫' ? 'background:var(--ziwei);color:#000;' : ''}">${palaceMap[cellData.idx]}</div></div>`;
+            }
+        }
+        boardHtml += `</div>`;
+        document.getElementById('ziwei-output').innerHTML = boardHtml;
+    }
+
+    // 5. 奇门算法引擎
+    function runQimen(actionDate) {
+        let hourShift = actionDate.getHours() % 8; 
+        rawData.qimen = []; 
+
+        let qimenHtml = `<div class="qimen-board">`;
+        for(let i=0; i<9; i++) {
+            let pNum = LUOSHU_POS[i];
+            if (pNum === 5) {
+                qimenHtml += `<div class="qm-cell center5">中五(天禽)</div>`;
+            } else {
+                const ringMap = {1:0, 8:1, 3:2, 4:3, 9:4, 2:5, 7:6, 6:7};
+                let ringIdx = ringMap[pNum];
+                let starIdx = (ringIdx + hourShift) % 8;
+                let doorIdx = (ringIdx + hourShift + 2) % 8;
+                let godIdx = (ringIdx + hourShift + 4) % 8; // 锚定阳遁排法
+
+                rawData.qimen.push(`[${PALACE_NAMES[pNum]}] 神盘:${GODS[godIdx]} | 天盘:${STARS[starIdx]} | 人盘:${DOORS[doorIdx]}`);
+
+                qimenHtml += `<div class="qm-cell"><div class="qm-god">${GODS[godIdx]}</div><div class="qm-star">${STARS[starIdx]}</div><div class="qm-door">${DOORS[doorIdx]}</div><div class="qm-palace">${PALACE_NAMES[pNum]}</div></div>`;
+            }
+        }
+        qimenHtml += `</div>`;
+        document.getElementById('qimen-output').innerHTML = qimenHtml;
+    }
+
+    // 6. 数据导出与 Prompt 生成引擎
+    function generateExportData() {
+        document.getElementById('export-panel').style.display = "block";
+        
+        let zwFormat = "";
+        PALACES.forEach(p => {
+            let stars = rawData.ziwei.palaces[p] ? rawData.ziwei.palaces[p].join("、") : "空宫";
+            zwFormat += `- ${p}：${stars}\n`;
+        });
+        let qmFormat = rawData.qimen.join("\n");
+
+        let promptText = `我正在使用“全息玄学排盘引擎”进行时空推演。请你扮演一位经验丰富、说话极度接地气的实战派顾问。
+
+请不要给我讲空洞的“底层逻辑”、“能量系统”，也不要堆砌玄学术语。请直接根据以下生成的【裸排盘数据】以及我的【实际问题】，用大白话为我做一次最实际的断局。
+
+【1. 基础时间参数】
+- 本命时间戳：${rawData.birthStr}
+- 起卦/起局时间：${rawData.actionStr} (锚定: 阳遁)
+
+【2. 周易排盘参数 (事件走势)】
+- 本卦卦象：上卦为 ${rawData.zhouyi.upName} (${rawData.zhouyi.upWx})，下卦为 ${rawData.zhouyi.downName} (${rawData.zhouyi.downWx})
+- 破局动爻：第 ${rawData.zhouyi.moving} 爻
+
+【3. 紫微斗数参数 (个人特质与业务线)】
+${zwFormat}
+
+【4. 奇门遁甲参数 (物理方位与风控沙盘)】
+${qmFormat}
+
+【请你这样回答我】：
+1. 现状诊断：一针见血点破我现在的处境和最大的痛点。
+2. 核心建议：大白话告诉我，最好的选择是什么？最坏的雷区在哪里？
+3. 行动指南：给我 1-2 条立马能用得上的具体操作建议（做减法、做加法、找什么样的人、避开什么样的事）。
+4. 时间线建议：什么时候是个好时机，什么时候要特别小心，请直接告诉我。
+
+【我的实际问题是】：
+（请在这里输入你当下正在纠结的事情，比如具体的人事纠纷、合同谈判、买卖决策或生活抉择，越具体越好）`;
+
+
+        document.getElementById('ai-prompt-data').value = promptText;
+    }
+
+    // 7. 复制与总控执行
+    function copyPrompt() {
+        let textarea = document.getElementById('ai-prompt-data');
+        textarea.select();
+        document.execCommand('copy');
+        alert("✅ 提示词已复制！请直接粘贴发送给 AI，记得填上你的实际问题！");
+    }
+
+    function runEngines() {
+        let actionStr = document.getElementById('action-time').value;
+        let birthStr = document.getElementById('birth-time').value;
+        if(!actionStr || !birthStr) {
+            alert("请确保本命时间和决策时间都已填写完整！");
+            return;
+        }
+        
+        rawData.actionStr = actionStr.replace("T", " ");
+        rawData.birthStr = birthStr.replace("T", " ");
+        
+        let actDate = new Date(actionStr);
+        let bDate = new Date(birthStr);
+        
+        runZhouyi(actDate);
+        runZiwei(bDate);
+        runQimen(actDate); 
+        
+        generateExportData();
+        
+        // 手机端点击运算后，自动滚动到底部看结果
+        setTimeout(() => {
+            document.getElementById('export-panel').scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+    }
 </script>
 </body>
 </html>
